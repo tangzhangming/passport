@@ -1,0 +1,1 @@
+import{c as r,w as e,r as t,o as c,a as n,b as s}from"./index-D6VgDoLK.js";const m={__name:"index",setup(_){return(d,p)=>{const o=t("el-button"),a=t("el-card");return c(),r(a,{shadow:"hover"},{default:e(()=>[n(o,{type:"primary"},{default:e(()=>[s("dashboard")]),_:1})]),_:1})}}};export{m as default};
