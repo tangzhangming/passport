@@ -48,3 +48,12 @@ function string_storege_as($storege, $path, $stringFile = null, $name = null, $o
     unlink($temp);
     return $filename;
 }
+
+
+function socialite($provider_name)
+{
+    // twitter默认为oauth1版本，特殊处理
+    $provider_name = ($provider_name=='twitter') ? 'twitter-oauth2' : $provider_name ;
+
+    return Socialite::driver($provider_name);
+}

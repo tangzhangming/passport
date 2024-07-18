@@ -1,18 +1,9 @@
 <template>
 	<div style="line-height: 45px;color: #FFF;">
+
+		<!-- 右侧 -->
 		<div class="account-head-right">
 			<a-space>
-				<!-- <span>{{ useUserStore().userInfo.name }}</span> -->
-<!-- 				<a-dropdown>
-					<a-avatar :size="32" shape="square">
-						<img :src="useUserStore().userInfo.avatar">
-					</a-avatar>
-				    <template #content>
-				        <a-doption>个人资料</a-doption>
-				        <a-doption @click="logout">退出登录</a-doption>
-				    </template>
-				</a-dropdown> -->
-
 				<div class="logoutButton">
 					<a-popconfirm content="您确定要退出当前登录状态吗?" position="lb" @ok="logout">
 						<a-button type="primary" status="warning">
@@ -23,17 +14,32 @@
 						</a-button>
 					</a-popconfirm>
 				</div>
-
-
 			</a-space>
 		</div>
+		<!-- 右侧 END -->
 
+
+		<!-- 左侧 -->
 		<div style="float:left;color: #fff;">
-			<div style="padding: 5px 5px 5px 20px;">
-				<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11c0 5.55-3.84 10.74-9 12c-5.16-1.26-9-6.45-9-12V5l9-4l9 4zm-9 10c3.75-1 7-5.46 7-9.78V6.3l-7-3.12z"/></svg>
-			</div>
+			<a-dropdown class="abcd">
+				<div class="site-switch-btn">
+					<icon-down/> Apps
+				</div>
+				<template #content :style="{'padding':'10px'}">
+					<div style="width:250px;height:500px;">
+					    <a-doption>腾讯视频</a-doption>
+					    <a-doption>腾讯音乐</a-doption>
+					    <a-doption>QQ 阅读</a-doption>
+					</div>
+				</template>
+			</a-dropdown>
 		</div>
+		<!-- 左侧 END -->
+
+
 	</div>
+
+
 </template>
 
 
@@ -50,28 +56,22 @@ const logout = ()=>{
 <style scoped>
 .account-head-right{
 	float: right;
+	margin-right: 5px;
 }
-
 .site-switch-btn{
-	width: 45px;
+	width: 80px;
+	height: 44px;
 	text-align: center;
 	cursor: pointer;
 }
 .site-switch-btn:hover{
 	background-color: #005792;
 }
-
-.logoutButton{
-/*	width: 150px;*/
-/*	height: 45px;*/
-/*    color: #FFF;*/
-    text-align: center;
-/*    border-bottom: 1px solid #ccc;*/
-/*    border-left: 1px solid #532323;*/
-	cursor: pointer;
-	padding-right: 15px;
+.site-switch-btn.arco-dropdown-open{
+	background-color: #1d3343;
 }
-/*.logoutButton:hover{
-	background: #548fcd;
-}*/
+.arco-dropdown-open .arco-icon-down {
+  transform: rotate(180deg);
+}
+
 </style>

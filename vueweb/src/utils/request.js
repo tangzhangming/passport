@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { useRoute, useRouter } from "vue-router";
+// import { useRoute, useRouter } from "vue-router";
 
-const router = useRouter();
-const route = useRoute();
+// const router = useRouter(); //这儿用不了这玩意儿 直接跳转吧
+
 
 const service = axios.create({
 	baseURL: 'https://passport.520.com/web-api/',
@@ -17,10 +17,10 @@ service.interceptors.response.use(
 	response => {
 		const res = response.data
 
-		// console.log(res)
-		// if( res.code == 403 && route.name!='login' ){
-		// 	return router.push({ name: 'login' });
-		// }
+		if( res.code == 401 ){
+			location.href = '/401';
+			return false;
+		}
 
 		return response;
 	},

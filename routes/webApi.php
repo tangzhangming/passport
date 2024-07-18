@@ -30,10 +30,12 @@ Route::middleware(\App\Http\Middleware\WebApiAuth::class)->group(function(){
 	// 读取个人资料
 	Route::get('/profile', [ProfileController::class, 'show']);
 	Route::put('/profile', [ProfileController::class, 'update']);
+	Route::post('/profile/picture', [ProfileController::class, 'updatePicture']);
 	
 	// 社交账号绑定
 	Route::get('/oauth/connects', [OAuthController::class, 'index']);
 	Route::get('/oauth/{provider_name}/redirect', [OAuthController::class, 'redirectToProvider']);
 	Route::get('/oauth/{provider_name}/callback', [OAuthController::class, 'handleProviderCallback']);
+	Route::post('/oauth/{provider_name}/unbind', [OAuthController::class, 'unbind']);
 
 });

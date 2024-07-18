@@ -13,6 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'api/*',
+        'web-api/*',
         'sso/login',
     ];
 }

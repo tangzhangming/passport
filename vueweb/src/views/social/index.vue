@@ -47,7 +47,7 @@
                 </a-list-item-meta>
 
                 <template #actions v-if="connect.bind_status!=undefined">
-                    <a-button type="outline" status="danger" v-if="connect.bind_status">解绑</a-button>
+                    <a-button type="outline" status="danger" @click="unbindHandle(provider_name)" v-if="connect.bind_status">解绑</a-button>
                     <a-button type="outline" status="success" @click="ProviderBindHandle(connect)" v-else>绑定</a-button>
                 </template>
 
@@ -75,6 +75,7 @@ const onBack = (event)=>{
     return router.push({name:'dashboard'})
 }
 
+// 打开绑定页面
 const ProviderBindHandle = (provider)=>{
     var iWidth = 600;                         //弹出窗口的宽度;
     var iHeight = 650;                        //弹出窗口的高度;
@@ -87,6 +88,19 @@ const ProviderBindHandle = (provider)=>{
         'height='+iHeight+',,innerHeight='+iHeight+',width='+iWidth+',innerWidth='+iWidth+',top='+iTop+',left='+iLeft+',toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no'
     )
 }
+
+// 解绑
+const unbindHandle = (provider_name)=>{
+    request.post('/oauth/'+ provider_name +'/unbind').then(function (response) {
+        Notification.success('解绑成功');
+        onLoad();
+
+    }).catch(function (error) {
+        Notification.error('服务器发生错误');
+        console.log(error);
+    });
+}
+
 
 const onLoad = async(event)=>{
     loading.value = true;

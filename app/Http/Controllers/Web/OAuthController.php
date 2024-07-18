@@ -71,11 +71,9 @@ class OAuthController extends Controller
 
     public function redirectToProvider(Request $request, $provider_name)
     {
-        $provider_name = ($provider_name=='twitter') ? 'twitter-oauth2' : $provider_name ;
-
         // 应当检查是否已经存在绑定
 
-        return Socialite::driver($provider_name)->stateless()->redirect();
+        return socialite($provider_name)->stateless()->redirect();
     }
 
 
@@ -86,10 +84,13 @@ class OAuthController extends Controller
      */
     public function handleProviderCallback(Request $request, $provider_name)
     {
-        $providerDriverName = ($provider_name=='twitter') ? 'twitter-oauth2' : $provider_name ;
-        
-        $oauthUser = Socialite::driver($providerDriverName)->stateless()->user();
+        $oauthUser = socialite($provider_name)->stateless()->user();
             
+        // 要检查用户不能已经绑定这个provider
+
+
+        // 这个provider用户不能已经被其他账户绑定
+
         $oauthUid = $oauthUser->getId(); 
         $displayName = $oauthUser->getNickname(); 
 
@@ -105,4 +106,18 @@ class OAuthController extends Controller
             'display_name' => $displayName,
         ]);
     }
+
+    public function unbind(Request $request, $provider_name)
+    {
+        DB::table('user_oauth')
+            ->where('user_id', $request->user()->id)
+            ->where('provider_name', $provider_name)
+            ->delete();
+
+        return response()->json([
+            'code' => 0,
+            'data' => null,
+        ]);
+    }
+
 }

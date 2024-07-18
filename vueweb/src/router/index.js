@@ -13,10 +13,17 @@ import LoginPopupView from '../views/guest/loginPopup.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // 登录
     {
       path: '/xlogin',
       name: 'login',
       component: LogineView
+    },
+    // 退出
+    {
+      path: '/xlogout',
+      name: 'logout',
+      component: () => import('../views/Logout.vue'),
     },
     {
       path: '/xlogin/popup',
@@ -40,6 +47,14 @@ const router = createRouter({
                 }
             },
             {
+                path: '/profile/edit',
+                name: 'profile.edit',
+                component: HomeView,
+                meta:{
+                    title: '个人资料编辑',
+                }
+            },
+            {
                 path: '/profile',
                 name: 'profile',
                 component: () => import('../views/profile/index.vue'),
@@ -47,14 +62,14 @@ const router = createRouter({
                     title: '个人资料',
                 }
             },
-            {
-                path: '/profile/edit',
-                name: 'profile.edit',
-                component: () => import('../views/profile/index.vue'),
-                meta:{
-                    title: '个人资料编辑',
-                }
-            },
+            // {
+            //     path: '/profile/edit',
+            //     name: 'profile.edit',
+            //     component: () => import('../views/profile/index.vue'),
+            //     meta:{
+            //         title: '个人资料编辑',
+            //     }
+            // },
             {
                 path: '/socialite',
                 name: 'social',
@@ -66,7 +81,7 @@ const router = createRouter({
         ]
     },
 
-
+    // 安全中心
     {
         path: '/security',
         name: '',
@@ -83,19 +98,51 @@ const router = createRouter({
         ]
     },
 
+    // 错误页面
+    {
+        path: '/errors',
+        name: '',
+        children: [
+            {
+                path: '/401',
+                name: 'unauthorized',
+                component: () => import('../views/errors/401.vue'),
+                meta:{
+                    title: '未登录或登录过期',
+                }
+            },
+        ]
+    },
 
+
+    {
+        path: '/:pathMatch(.*)',
+        name: 'notfound404',
+        component: () => import('../views/errors/404.vue'),
+        meta:{
+            title: '404 - 页面不存在',
+        }
+    },
+    /* end */
   ]
 })
 
 
 let status = true;
 let statusRes = {};
+const whiteList = [
+    'unauthorized',
+    'login', 
+    'logout',
+]
 router.beforeEach(async(to, from, next) => {
     setPageTitle(to);
     
-    // if(to.name == 'login'){
-    //     next();
-    // }
+    // 无需拉去profile的页面
+    if (whiteList.indexOf(to.name) !== -1) {
+        next()
+        return;
+    }
 
     if( status ){
         // const response = await getStatus();
@@ -108,7 +155,6 @@ router.beforeEach(async(to, from, next) => {
 
 
     if( statusRes.code == 0 ){
-        // console.log('已登录')
         // 已登录
         if( to.name == 'login' ){
             // 已登录禁止访问登录页面
@@ -130,7 +176,8 @@ router.beforeEach(async(to, from, next) => {
             ElMessage.error('访问的页面需要登录.')
             // next(`/login.do?next=${to.path}`)
             // next({name:'login'})
-            location.href = '/login'
+            next({name:'logout'})
+            // location.href = '/login'
         }
     }
 })

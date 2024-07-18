@@ -19,13 +19,6 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        $socialBind = [
-            'github' => [
-                'bind_status' => true,
-                'bind_link' => url('sss'),
-            ],
-        ];
-
 
         $data = [
             'user_id' => $user->id,
@@ -34,7 +27,6 @@ class ProfileController extends Controller
             'email' => $user->email,
             'email_verified_at' => $user->email_verified_at,
             'avatar' => $user->avatar,
-            'socialBind' => $socialBind,
         ];
         return response()->json([
             'code' => 0,
@@ -104,4 +96,31 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    // https://passport.520.com/web-api/profile/picture
+    public function updatePicture(Request $request)
+    {
+        $request->validate([
+            'file' => [
+                'required',
+                'file',
+                'mimes:jpg,png,webp',
+                'dimensions:min_width=50,min_height=50,max_width=1024,max_height=1024,ratio=1',
+            ],
+        ]);
+
+
+        $user = $request->user();
+        $file = $request->file('file');
+
+
+        $user->setProfilePicture($file);
+        $user->save();
+
+        return response()->json([
+            'code' => 0,
+            'data' => $user,
+        ]);
+    }
+
 }

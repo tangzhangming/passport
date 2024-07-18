@@ -33,8 +33,8 @@ return [
 
     'github' => [
         'client_id' => 'Ov23ctFg0cFbB59Y0NsH',
-        'client_secret' => '9e20130eea1323d14f1b3094617e4c1227345e8d',
-        'redirect' => env('GITHUB_OAUTH_SECRET'),
+        'client_secret' => env('GITHUB_OAUTH_SECRET'),
+        'redirect' => 'https://passport.520.com/web-api/oauth/github/callback',
         'guzzle' => [
             'proxy' => 'http://172.29.128.1:7890',
         ],
@@ -45,6 +45,7 @@ return [
         'client_secret' => env('GOOGLE_OAUTH_SECRET'),
         'redirect' => 'https://passport.520.com/web-api/oauth/google/callback',
     ],
+
     'twitter' => [
         'client_id' => 'TzU3VlQwcDRmYVJ2RVZ2dDJ3c0g6MTpjaQ',
         'client_secret' => env('TWITTER_OAUTH_SECRET'),
